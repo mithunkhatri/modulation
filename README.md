@@ -1,4 +1,5 @@
 # Modulation 🎵
+![Build Status](https://github.com/mithunkhatri/modulation/actions/workflows/build.yml/badge.svg)
 > Resonating through your favorite terminal
 
 Modulation is a high-performance, cross-platform TUI (Terminal User Interface) radio player inspired by `htop` and `pianobar`. It allows you to stream thousands of radio stations from around the world directly from your command line.
