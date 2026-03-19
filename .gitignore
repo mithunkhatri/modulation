@@ -1,0 +1,13 @@
+# Binaries
+modulation
+modulation.exe
+*.exe
+*.test
+
+# Local Config / Favorites
+favorites.json
+.config/
+
+# OS files
+.DS_Store
+Thumbs.db
