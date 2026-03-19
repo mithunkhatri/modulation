@@ -1,7 +1,11 @@
 # Modulation 🎵
 ![Build Status](https://github.com/mithunkhatri/modulation/actions/workflows/build.yml/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/mithunkhatri/modulation)](https://goreportcard.com/report/github.com/mithunkhatri/modulation)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/mithunkhatri/modulation)](https://github.com/mithunkhatri/modulation)
+[![Latest Release](https://img.shields.io/github/v/release/mithunkhatri/modulation)](https://github.com/mithunkhatri/modulation/releases)
 [![License](https://img.shields.io/github/license/mithunkhatri/modulation)](https://github.com/mithunkhatri/modulation/blob/main/LICENSE)
+![Platforms](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue)
+
 > Resonating through your favorite terminal
 
 Modulation is a high-performance, cross-platform TUI (Terminal User Interface) radio player inspired by `htop` and `pianobar`. It allows you to stream thousands of radio stations from around the world directly from your command line.
