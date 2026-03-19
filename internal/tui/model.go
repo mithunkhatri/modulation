@@ -10,8 +10,8 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/mk/modulation/internal/audio"
-	"github.com/mk/modulation/internal/radio"
+	"github.com/mithunkhatri/modulation/internal/audio"
+	"github.com/mithunkhatri/modulation/internal/radio"
 )
 
 var (
