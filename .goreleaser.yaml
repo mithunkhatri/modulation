@@ -7,7 +7,8 @@ before:
     - go mod tidy
 
 builds:
-  - env:
+  - id: default
+    env:
       - CGO_ENABLED=0
     goos:
       - darwin
@@ -21,27 +22,35 @@ builds:
       - goos: windows
         goarch: arm64
 
-  - id: linux
+  - id: linux-amd64
     env:
       - CGO_ENABLED=1
-      # Note: For cross-compiling Linux with CGO, you need the appropriate cross-compilers.
-      # These will be installed in the GitHub Actions workflow.
     goos:
       - linux
     goarch:
       - amd64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+  - id: linux-arm64
+    env:
+      - CGO_ENABLED=1
+      - CC=aarch64-linux-gnu-gcc
+    goos:
+      - linux
+    goarch:
       - arm64
     ldflags:
       - -s -w -X main.version={{.Version}}
 
 archives:
-  - format: tar.gz
+  - format_overrides:
+      - goos: windows
+        formats: [zip]
+    formats: [tar.gz]
     # this name template makes the OS and Arch more readable in the release assets
     name_template: >-
       {{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}
-    format_overrides:
-      - goos: windows
-        format: zip
 
 nfpms:
   - maintainer: Mithun Khatri <mithunkhatri@users.noreply.github.com>
@@ -54,7 +63,7 @@ nfpms:
     dependencies:
       - ffmpeg
 
-brews:
+homebrews:
   - name: modulation
     repository:
       owner: mithunkhatri
@@ -72,7 +81,7 @@ checksum:
   name_template: 'checksums.txt'
 
 snapshot:
-  name_template: '{{ incpatch .Version }}-next'
+  version_template: '{{ incpatch .Version }}-next'
 
 changelog:
   sort: asc
