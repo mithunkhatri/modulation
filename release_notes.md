@@ -1,4 +1,10 @@
-# Modulation v1.0.1 🚀
+# Modulation v1.0.2 🚀
+
+- **Fixed Installation Script**: Resolved a syntax error in `install.sh` that affected macOS users.
+- **Robust CI/CD**: Fixed GitHub Actions to support `linux/arm64` cross-compilation with proper CGO and multi-arch dependencies.
+- **Improved Uninstall**: Added an `uninstall.sh` script for easy removal.
+
+# Modulation v1.0.1 🎙️
 
 - **Robust Radio Support**: Automatically rotates through multiple Radio Browser mirrors on failure.
 - **Mirror Refresh**: New `m` shortcut to manually refresh the list of available API mirrors.
