@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 
@@ -12,6 +13,13 @@ import (
 var version = "dev"
 
 func main() {
+	showVersion := flag.Bool("version", false, "show version and exit")
+	flag.Parse()
+
+	if *showVersion {
+		fmt.Printf("modulation version %s\n", version)
+		return
+	}
 	player, err := audio.NewPlayer()
 	if err != nil {
 		fmt.Printf("Error creating player: %v\n", err)
