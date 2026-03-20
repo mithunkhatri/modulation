@@ -63,7 +63,7 @@ nfpms:
     dependencies:
       - ffmpeg
 
-homebrews:
+brews:
   - name: modulation
     repository:
       owner: mithunkhatri
