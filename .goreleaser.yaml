@@ -68,6 +68,7 @@ brews:
     repository:
       owner: mithunkhatri
       name: homebrew-modulation
+      token: "{{ .Env.GORELEASER_TOKEN }}"
     directory: Formula
     homepage: https://github.com/mithunkhatri/modulation
     description: High-performance, cross-platform TUI radio player.
