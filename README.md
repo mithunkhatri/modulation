@@ -4,6 +4,7 @@
 [![Go Version](https://img.shields.io/github/go-mod/go-version/mithunkhatri/modulation)](https://github.com/mithunkhatri/modulation)
 [![Latest Release](https://img.shields.io/github/v/release/mithunkhatri/modulation)](https://github.com/mithunkhatri/modulation/releases)
 [![License](https://img.shields.io/github/license/mithunkhatri/modulation)](https://github.com/mithunkhatri/modulation/blob/main/LICENSE)
+[![Total Downloads](https://img.shields.io/github/downloads/mithunkhatri/modulation/total)](https://github.com/mithunkhatri/modulation/releases)
 ![Platforms](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-blue)
 
 > Resonating through your favorite terminal
