@@ -47,6 +47,19 @@ If you prefer to build from source manually:
 go build -o modulation .
 ```
 
+## Uninstallation 🗑️
+
+If you need to uninstall Modulation, you can run the following command:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/mithunkhatri/modulation/main/uninstall.sh | bash
+```
+
+Alternatively, if you have the source code locally:
+```bash
+./uninstall.sh
+```
+
 ## Usage ⌨️
 
 Run the app:
