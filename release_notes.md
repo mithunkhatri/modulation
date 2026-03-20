@@ -1,4 +1,4 @@
-# Modulation v1.1.0 🚀
+# Modulation v1.0.1 🚀
 
 - **Robust Radio Support**: Automatically rotates through multiple Radio Browser mirrors on failure.
 - **Mirror Refresh**: New `m` shortcut to manually refresh the list of available API mirrors.
