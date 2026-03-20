@@ -144,6 +144,7 @@ if [ ! -f "$BINARY_NAME" ]; then
     VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "dev")
     go build -ldflags "-X main.version=$VERSION" -o "$BINARY_NAME" .
 fi
+fi
 
 # 4. Install
 if [ "$OS_TYPE" == "Windows" ]; then
