@@ -38,6 +38,7 @@ jobs:
         env:
           GOOS: ${{ matrix.os }}
           GOARCH: ${{ matrix.arch }}
+          CGO_ENABLED: 0
         run: |
           BINARY_NAME="modulation"
           if [ "${{ matrix.os }}" = "windows" ]; then BINARY_NAME="modulation.exe"; fi
