@@ -74,17 +74,38 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v4
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          pattern: modulation-*
-          path: dist/
-          merge-multiple: true
+          fetch-depth: 0
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          files: dist/*
-          generate_release_notes: true
-          draft: false
-          prerelease: false
+          go-version: 'stable'
+
+      - name: Install Cross-Compilation Dependencies (Linux)
+        run: |
+          sudo dpkg --add-architecture arm64
+          # Noble (24.04) uses deb822 sources
+          if [ -f /etc/apt/sources.list.d/ubuntu.sources ]; then
+            sudo sed -i 's/Types: deb/Types: deb\nArchitectures: amd64/' /etc/apt/sources.list.d/ubuntu.sources
+            printf "Types: deb\nURIs: http://ports.ubuntu.com/ubuntu-ports/\nSuites: noble noble-updates noble-backports noble-security\nComponents: main restricted universe multiverse\nArchitectures: arm64\n" | sudo tee /etc/apt/sources.list.d/arm64.sources
+          else
+            sudo sed -i 's/^deb /deb [arch=amd64] /' /etc/apt/sources.list
+            echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports/ noble main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list
+          fi
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg libasound2-dev libasound2-dev:arm64 gcc-aarch64-linux-gnu
+
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Create a custom PAT with 'repo' scope and add it as GORELEASER_TOKEN
+          # for Homebrew Tap updates to work.
+          GORELEASER_TOKEN: ${{ secrets.GORELEASER_TOKEN }}

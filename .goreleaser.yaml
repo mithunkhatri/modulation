@@ -1,0 +1,82 @@
+version: 2
+
+project_name: modulation
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+    ignore:
+      - goos: windows
+        goarch: arm64
+
+  - id: linux
+    env:
+      - CGO_ENABLED=1
+      # Note: For cross-compiling Linux with CGO, you need the appropriate cross-compilers.
+      # These will be installed in the GitHub Actions workflow.
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - format: tar.gz
+    # this name template makes the OS and Arch more readable in the release assets
+    name_template: >-
+      {{ .ProjectName }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}
+    format_overrides:
+      - goos: windows
+        format: zip
+
+nfpms:
+  - maintainer: Mithun Khatri <mithunkhatri@users.noreply.github.com>
+    description: High-performance, cross-platform TUI radio player.
+    homepage: https://github.com/mithunkhatri/modulation
+    license: MIT
+    formats:
+      - deb
+      - rpm
+    dependencies:
+      - ffmpeg
+
+brews:
+  - name: modulation
+    repository:
+      owner: mithunkhatri
+      name: homebrew-modulation
+    directory: Formula
+    homepage: https://github.com/mithunkhatri/modulation
+    description: High-performance, cross-platform TUI radio player.
+    license: MIT
+    install: |
+      bin.install "modulation"
+    dependencies:
+      - name: ffmpeg
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: '{{ incpatch .Version }}-next'
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
