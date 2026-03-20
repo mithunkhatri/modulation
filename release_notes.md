@@ -1,4 +1,10 @@
-# Modulation v1.0.0 🚀
+# Modulation v1.1.0 🚀
+
+- **Robust Radio Support**: Automatically rotates through multiple Radio Browser mirrors on failure.
+- **Mirror Refresh**: New `m` shortcut to manually refresh the list of available API mirrors.
+- **Improved Reliability**: Better handling of flaky streams and mirror-specific issues.
+
+# Modulation v1.0.0 🎙️
 
 Modulation is a high-performance, cross-platform TUI radio player that brings any station in the world directly to your terminal.
 

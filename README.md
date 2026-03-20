@@ -65,6 +65,7 @@ Run the app:
 | `/` | Search stations |
 | `f` | Filter by category |
 | `b` | Toggle Background (Minimized) mode |
+| `m` | Refresh Radio Browser Mirrors |
 | `c` | Clear error messages |
 | `1-9` | Quickly select the first 9 visible stations |
 | `q` | Quit |

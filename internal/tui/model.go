@@ -274,6 +274,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "c":
 			m.errorMessage = ""
 			m.err = nil
+		case "m":
+			m.loading = true
+			m.errorMessage = "Refreshing mirrors..."
+			return m, func() tea.Msg {
+				err := radio.RefreshMirrors()
+				if err != nil {
+					return errorMsg(err)
+				}
+				return fetchStations(m.searchInput.Value(), m.filterInput.Value())()
+			}
 		}
 
 	case tea.WindowSizeMsg:
@@ -336,6 +346,7 @@ func (m Model) View() string {
 	titleStr := titleStyle.Render(title)
 	taglineStr := taglineStyle.Render(" Resonating through your favorite terminal")
 	statusLine := fmt.Sprintf("  Playing: %s", status)
+	mirrorLine := fmt.Sprintf("  API Mirror: %s", radio.GetCurrentMirror())
 	errorLine := m.getErrorMessage()
 
 	// Simple header building
@@ -343,6 +354,7 @@ func (m Model) View() string {
 	s.WriteString(titleStr + "\n")
 	s.WriteString(taglineStr + "\n\n")
 	s.WriteString(statusLine + "\n")
+	s.WriteString(mirrorLine + "\n")
 	if errorLine != "" {
 		s.WriteString(errorLine + "\n")
 	}
@@ -405,7 +417,7 @@ func (m Model) View() string {
 	}
 
 	// Footer
-	help := " q: quit | enter/space: play | v: toggle favs | a: fav/unfav | p: pause | s: stop | 1-9: select | /: search | f: filter | c: clear | b: background "
+	help := " q: quit | enter/space: play | v: toggle favs | a: fav/unfav | p: pause | s: stop | 1-9: select | /: search | f: filter | c: clear | b: background | m: refresh mirrors "
 	goStyle := lipgloss.NewStyle().Foreground(lipgloss.Color("6")).Bold(true)
 	credits := fmt.Sprintf(" Modulation (%s) | Made with %s by %s ", Version, goStyle.Render("Go"), goStyle.Render("Mithun Khatri"))
 
