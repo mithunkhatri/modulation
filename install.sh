@@ -53,14 +53,44 @@ esac
 
 echo -e "Detected OS: ${BLUE}${OS_TYPE}${NC}"
 
+# Detect architecture
+ARCH="$(uname -m)"
+case "${ARCH}" in
+    x86_64)  ARCH_TYPE=amd64;;
+    arm64|aarch64) ARCH_TYPE=arm64;;
+    *)       ARCH_TYPE="${ARCH}";;
+esac
+
 # Define binary name
 BINARY_NAME="modulation"
 if [ "$OS_TYPE" == "Windows" ]; then
     BINARY_NAME="modulation.exe"
 fi
 
-# 1. Check/Install Go
-if ! command -v go &> /dev/null; then
+# 1. Try to download pre-built binary (for tracking and speed)
+LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+if [ -n "$LATEST_TAG" ] && [ "$IS_REMOTE" == "true" ]; then
+    echo -e "${BLUE}Attempting to download pre-built binary for ${OS_TYPE}/${ARCH_TYPE}...${NC}"
+    
+    # Map OS_TYPE to the naming convention in CI
+    OS_LOWER=$(echo "$OS_TYPE" | tr '[:upper:]' '[:lower:]')
+    ASSET_NAME="modulation-${OS_LOWER}-${ARCH_TYPE}"
+    if [ "$OS_TYPE" == "Windows" ]; then ASSET_NAME="${ASSET_NAME}.exe"; fi
+    
+    RELEASE_URL="https://github.com/mithunkhatri/modulation/releases/download/${LATEST_TAG}/${ASSET_NAME}"
+    
+    if curl -sL --fail -o "$BINARY_NAME" "$RELEASE_URL"; then
+        echo -e "${GREEN}Downloaded pre-built binary successfully.${NC}"
+        chmod +x "$BINARY_NAME"
+    else
+        echo -e "${BLUE}No pre-built binary found for your platform. Falling back to build from source...${NC}"
+    fi
+fi
+
+# 2. Check/Install dependencies if binary not downloaded
+if [ ! -f "$BINARY_NAME" ]; then
+    # 2.1 Check/Install Go
+    if ! command -v go &> /dev/null; then
     echo -e "${BLUE}Go not found. Attempting to install...${NC}"
     if [ "$OS_TYPE" == "macOS" ] && command -v brew &> /dev/null; then
         brew install go
@@ -108,10 +138,12 @@ if ! command -v ffmpeg &> /dev/null; then
     fi
 fi
 
-# 3. Build the application
-echo -e "${BLUE}Building Modulation...${NC}"
-VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "dev")
-go build -ldflags "-X main.version=$VERSION" -o "$BINARY_NAME" .
+# 3. Build the application (if not downloaded)
+if [ ! -f "$BINARY_NAME" ]; then
+    echo -e "${BLUE}Building Modulation...${NC}"
+    VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "dev")
+    go build -ldflags "-X main.version=$VERSION" -o "$BINARY_NAME" .
+fi
 
 # 4. Install
 if [ "$OS_TYPE" == "Windows" ]; then
